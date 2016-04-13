@@ -55,7 +55,7 @@ type NamedParameter struct {
 	// done sort of like the DefinitionChoice type.
 
 	// The name of the Parameter, as defined by the type containing it.
-	Name string
+	Name string `yaml:"-"`
 	// TODO: Fill this during the post-processing phase
 
 	// A friendly name used only for display or documentation purposes.
@@ -79,7 +79,7 @@ type NamedParameter struct {
 
 	// If the enum attribute is defined, API clients and servers MUST verify
 	// that a parameter's value matches a value in the enum array
-	Enum []Any `yaml:",flow"`
+	Enum []Any `yaml:",flow,omitempty"`
 
 	// The pattern attribute is a regular expression that a parameter of type
 	// string MUST match. Regular expressions MUST follow the regular
@@ -106,11 +106,11 @@ type NamedParameter struct {
 
 	// An example value for the property. This can be used, e.g., by
 	// documentation generators to generate sample values for the property.
-	Example string
+	Example string `yaml:"example,omitempty"`
 
 	// The repeat attribute specifies that the parameter can be repeated,
 	// i.e. the parameter can be used multiple times
-	Repeat *bool // TODO: What does this mean?
+	Repeat *bool `yaml:"repeat,omitempty"` // TODO: What does this mean?
 
 	// Whether the parameter and its value MUST be present when a call is made.
 	// In general, parameters are optional unless the required attribute is
@@ -120,7 +120,7 @@ type NamedParameter struct {
 
 	// The default value to use for the property if the property is omitted or
 	// its value is not specified
-	Default Any
+	Default Any `yaml:"default,omitempty"`
 
 	format Any `ramlFormat:"Named parameters must be mappings. Example: userId: {displayName: 'User ID', description: 'Used to identify the user.', type: 'integer', minimum: 1, example: 5}"`
 }
@@ -229,7 +229,7 @@ type Bodies struct {
 type Response struct {
 
 	// HTTP status code of the response
-	HTTPCode HTTPCode
+	HTTPCode HTTPCode `yaml:"-"`
 	// TODO: Fill this during the post-processing phase
 
 	// Clarifies why the response was emitted. Response descriptions are
@@ -320,7 +320,7 @@ type Trait struct {
 	// locale-specific pluralization of its original value. The only locale
 	// supported by this version of RAML is United States English.
 
-	Name string `yaml:"name"`
+	Name string `yaml:"-"`
 	// TODO: Fill this during the post-processing phase
 
 	// The usage property of a resource type or trait is used to describe how
@@ -349,7 +349,7 @@ type Trait struct {
 // Method that is part of a ResourceType. DIfferentiated from Traits since it
 // doesn't contain Usage, optional fields etc.
 type ResourceTypeMethod struct {
-	Name string `yaml:"name"`
+	Name string `yaml:"-"`
 	// TODO: Fill this during the post-processing phase
 
 	// Briefly describes what the method does to the resource
@@ -414,7 +414,7 @@ type ResourceType struct {
 	// supported by this version of RAML is United States English.
 
 	// Name of the resource type
-	Name string `yaml:"name,omitempty"`
+	Name string
 	// TODO: Fill this during the post-processing phase
 
 	// The usage property of a resource type or trait is used to describe how
@@ -455,7 +455,7 @@ type SecuritySchemeMethod struct {
 // Most REST APIs have one or more mechanisms to secure data access, identify
 // requests, and determine access level and data visibility.
 type SecurityScheme struct {
-	Name string `yaml:"name,omitempty"`
+	Name string
 	// TODO: Fill this during the post-processing phase
 
 	// Briefly describes the security scheme
@@ -494,7 +494,7 @@ type SecurityScheme struct {
 
 // Methods are operations that are performed on a resource
 type Method struct {
-	Name string `yaml:"name,omitempty"`
+	Name string `yaml:"-"`
 	// TODO: Fill this during the post-processing phase
 
 	// Briefly describes what the method does to the resource
@@ -556,14 +556,14 @@ type Resource struct {
 
 	// Resources are identified by their relative URI, which MUST begin with
 	// a slash (/).
-	URI string
+	URI string `yaml:"uri,omitempty"`
 	// TODO: Fill this during the post-processing phase
 
 	// A resource defined as a child property of another resource is called a
 	// nested resource, and its property's key is its URI relative to its
 	// parent resource's URI. If this is not nil, then this resource is a
 	// child resource.
-	Parent *Resource
+	Parent *Resource `yaml:"parent,omitempty"`
 	// TODO: Fill this during the post-processing phase
 
 	// A friendly name to the resource
@@ -650,7 +650,7 @@ type Resource struct {
 type APIDefinition struct {
 
 	// RAML 0.8
-	RAMLVersion string `yaml:"raml_version"`
+	RAMLVersion string `yaml:"-"`
 
 	// The title property is a short plain text description of the RESTful API.
 	// The title property's value SHOULD be suitable for use as a title for the
